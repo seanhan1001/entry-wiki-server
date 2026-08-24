@@ -1,0 +1,11 @@
+{
+  "name": "entry-wiki-server",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node 서버.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  }
+}
