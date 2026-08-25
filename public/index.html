@@ -1,31 +1,10 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>Entry Wiki</title>
-    <link rel="stylesheet" href="/entry.min.css">
-</head>
-<body>
+<script src="/entry.min.js"></script>
 
-    <div id="entryContainer"></div>
+<script>
+    console.log("Entry =", Entry);
+    console.log("Entry.init =", Entry.init);
 
-    <script src="/entry.min.js"></script>
-
-    <script>
-        console.log("EntryJS =", Entry);
-        console.log("Entry.init =", Entry.init);
-
-        if (typeof Entry.init === "function") {
-            Entry.init(
-                document.getElementById("entryContainer"),
-                {
-                    type: "workspace"
-                }
-            );
-        } else {
-            console.error("Entry.init이 로드되지 않았음");
-        }
-    </script>
-
-</body>
-</html>
+    Entry.init(document.getElementById("entryContainer"), {
+        type: "workspace"
+    });
+</script>
