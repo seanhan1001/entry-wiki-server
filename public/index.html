@@ -3,9 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Entry Wiki</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/entrylabs/entryjs@develop/dist/entry.css">
+
+    <script src="https://cdn.jsdelivr.net/gh/entrylabs/entryjs@develop/extern/lang/ko.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/entrylabs/entryjs@develop/extern/util/static.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/entrylabs/entryjs@develop/dist/entry.min.js"></script>
 </head>
+
 <body>
-    <h1>Entry Wiki</h1>
-    <p>웹페이지 연결 성공!</p>
+    <div id="entryContainer"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const initOption = {
+                type: "workspace"
+            };
+
+            Entry.creationChangedEvent = new Entry.Event(window);
+
+            Entry.init(
+                document.getElementById("entryContainer"),
+                initOption
+            );
+
+            Entry.loadProject();
+        });
+    </script>
 </body>
 </html>
