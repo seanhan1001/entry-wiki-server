@@ -1,69 +1,68 @@
-<link rel="stylesheet" href="/entry-tool.css">
-<link rel="stylesheet" href="/entry.min.css">
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/entry-tool.css">
+    <link rel="stylesheet" href="/entry.min.css">
+</head>
+
+<body>
 
 <div id="entryContainer"></div>
 
+<!-- EntryJS 필수 의존성 -->
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+
+<!-- CreateJS -->
+<script src="https://code.createjs.com/0.8.0/easeljs.min.js"></script>
+<script src="https://code.createjs.com/0.6.0/preloadjs.min.js"></script>
+<script src="https://code.createjs.com/0.6.0/soundjs.min.js"></script>
+
+<!-- 기타 EntryJS 의존성 -->
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+
+<!-- React -->
 <script src="https://cdn.jsdelivr.net/npm/react@17/umd/react.production.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/react-dom@17/umd/react-dom.production.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lodash@4/lodash.min.js"></script>
 
+<!-- 네 파일 -->
 <script src="/entry-tool.js"></script>
 <script src="/legacy-video.js"></script>
 <script src="/sound-editor.js"></script>
 
-<!-- ★ EntryJS 공식 필수 선행 파일 -->
+<!-- EntryJS 공식 선행 파일 -->
 <script src="/entry-lang-ko.js"></script>
 <script src="/entry-static.js"></script>
 
+<!-- EntryJS -->
 <script src="/entry.min.js"></script>
 
 <script>
-    console.log("Entry.init:", typeof Entry.init);
+document.addEventListener("DOMContentLoaded", function () {
 
-    Entry.creationChangedEvent = new Entry.Event(window);
+    console.log("createjs:", typeof createjs);
+    console.log("Entry:", typeof Entry);
+    console.log("Entry.init:", typeof Entry.init);
+    console.log("Entry.loadProject:", typeof Entry.loadProject);
 
     Entry.init(document.getElementById("entryContainer"), {
         type: "workspace",
         libDir: "/"
     });
 
-    fetch("https://playentry.org/graphql/SELECT_PROJECT", {
-      "headers": {
-        "accept": "*/*",
-        "accept-language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
-        "content-type": "application/json",
-        "priority": "u=1, i",
-        "sec-ch-ua": "\"Not=A?Brand\";v=\"99\", \"Google Chrome\";v=\"151\", \"Chromium\";v=\"151\"",
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": "\"macOS\"",
-        "sec-fetch-dest": "empty",
-        "sec-fetch-mode": "cors",
-        "sec-fetch-site": "same-origin",
-        "x-client-type": "Client"
-      },
-      "referrer": "https://playentry.org/iframe/6a8a394af6d0027a7c0576b7?s=57c271ec",
-      "body": "{\"query\":\"\\n    query SELECT_PROJECT($id: ID! $groupId: ID) {\\n        project(id: $id, groupId: $groupId) {\\n            id\\n            name\\n            speed\\n            objects\\n            variables\\n            messages\\n            functions\\n            tables\\n            scenes\\n            cloudVariable\\n            learning\\n            expansionBlocks\\n            aiUtilizeBlocks\\n            hardwareLiteBlocks\\n        }\\n    }\\n\",\"variables\":{\"id\":\"6a8a394af6d0027a7c0576b7\"}}",
-      "method": "POST",
-      "mode": "cors",
-      "credentials": "include"
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("프로젝트 응답:", data);
+    console.log("Entry.init 완료");
 
-        const project = data.data.project;
+    Entry.loadProject();
 
-        if (!project) {
-            console.error("프로젝트 데이터를 찾지 못함");
-            return;
-        }
-
-        Entry.clearProject();
-        Entry.loadProject(project);
-
-        console.log("작품 로드 완료:", project.name);
-    })
-    .catch(error => {
-        console.error("프로젝트 로드 실패:", error);
-    });
+    console.log("Entry.loadProject 완료");
+});
 </script>
+
+</body>
+</html>
+```
