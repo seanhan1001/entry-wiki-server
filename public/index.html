@@ -38,7 +38,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     Entry.init(document.getElementById("entryContainer"), {
         type: "workspace",
-        libDir: "/"
+        libDir: "/lib",
+        entryDir: "/@entrylabs/entry",
+        baseUrl: location.origin
     });
 
     console.log("Entry.init 완료");
