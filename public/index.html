@@ -1,53 +1,62 @@
+```html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/entry-tool.css">
-    <link rel="stylesheet" href="/entry.min.css">
-</head>
-<body>
+<meta charset="UTF-8">
+<title>EntryJS</title>
 
-<div id="entryContainer"></div>
+<link rel="stylesheet" href="/entryjs/dist/entry.css">
+
+<script src="/lib/jquery.min.js"></script>
+<script src="/lib/jquery-ui.min.js"></script>
+<script src="/lib/underscore.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script src="/lib/velocity.min.js"></script>
 
 <script src="/lib/preloadjs-0.6.0.min.js"></script>
 <script src="/lib/easeljs-0.8.0.min.js"></script>
 <script src="/lib/soundjs-0.6.0.min.js"></script>
 <script src="/lib/flashaudioplugin-0.6.0.min.js"></script>
 
-<script src="/lib/lodash.min.js"></script>
-<script src="/lib/jquery.min.js"></script>
-<script src="/lib/jquery-ui.min.js"></script>
-<script src="/lib/velocity.min.js"></script>
-<script src="/lib/underscore.min.js"></script>
-
 <script src="/lib/react.min.js"></script>
 <script src="/lib/react-dom.min.js"></script>
 
-<script src="/entry-tool.js"></script>
-<script src="/legacy-video.js"></script>
-<script src="/sound-editor.js"></script>
+<script src="/entryjs/extern/util/filbert.js"></script>
+<script src="/entryjs/extern/util/CanvasInput.js"></script>
+<script src="/entryjs/extern/util/ndgmr.Collision.js"></script>
+<script src="/entryjs/extern/util/handle.js"></script>
+<script src="/entryjs/extern/util/bignumber.min.js"></script>
 
-<script src="/entry-lang-ko.js"></script>
-<script src="/entry-static.js"></script>
-<script src="/entry.min.js"></script>
+<script src="/entryjs/extern/lang/ko.js"></script>
+<script src="/entryjs/extern/util/static.js"></script>
+
+<script src="/entryjs/dist/entry.min.js"></script>
+</head>
+
+<body>
+<div id="workspace"></div>
 
 <script>
-console.log("createjs:", typeof createjs);
-console.log("_:", typeof _);
-console.log("React:", typeof React);
-console.log("ReactDOM:", typeof ReactDOM);
-console.log("Entry:", typeof Entry);
-console.log("Entry.init:", typeof Entry.init);
-console.log("Entry.loadProject:", typeof Entry.loadProject);
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("createjs:", typeof createjs);
+    console.log("_:", typeof _);
+    console.log("React:", typeof React);
+    console.log("ReactDOM:", typeof ReactDOM);
+    console.log("Entry:", typeof Entry);
+    console.log("Entry.init:", typeof Entry.init);
+    console.log("Entry.loadProject:", typeof Entry.loadProject);
 
-if (typeof Entry.init === "function") {
-    Entry.init(document.getElementById("entryContainer"), {
+    Entry.creationChangedEvent = new Entry.Event(window);
+
+    Entry.init(document.getElementById("workspace"), {
         type: "workspace",
-        libDir: "/lib"
+        libDir: "/lib",
+        entryDir: "/@entrylabs/entry"
     });
-}
-</script>
 
+    Entry.loadProject();
+});
+</script>
 </body>
 </html>
+```
