@@ -17,7 +17,9 @@
 <script src="/entry.min.js"></script>
 
 <script>
-async function start() {
+(async function () {
+    const projectId = "6a8a394af6d0027a7c0576b7";
+
     Entry.creationChangedEvent = new Entry.Event(window);
 
     Entry.init(document.getElementById("entryContainer"), {
@@ -25,10 +27,97 @@ async function start() {
         libDir: "/"
     });
 
-    console.log("Entry.init:", typeof Entry.init);
+    const query = `
+        query SELECT_PROJECT($id: ID! $groupId: ID) {
+            project(id: $id, groupId: $groupId) {
+                id
+                speed
+                objects
+                variables
+                messages
+                functions
+                tables
+                scenes
+                cloudVariable
+                learning
+                expansionBlocks
+                aiUtilizeBlocks
+                hardwareLiteBlocks
+                realTimeVariable {
+                    variableType
+                    key
+                    value
+                    array {
+                        key
+                        data
+                    }
+                    minValue
+                    maxValue
+                    visible
+                    x
+                    y
+                    width
+                    height
+                    object
+                }
+            }
+        }
+    `;
 
-    // 여기서 프로젝트를 가져와서 Entry.loadProject()에 넣을 거임
-}
+    const response = await fetch("https://playentry.org/graphql/SELECT_PROJECT", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({
+            query,
+            variables: {
+                id: projectId
+            }
+        })
+    });
 
-start();
+    const data = await response.json();
+
+    if (data.errors) {
+        console.error(data.errors);
+        return;
+    }
+
+    const project = data.data.project;
+
+    Entry.clearProject();
+    Entry.loadProject(project);
+
+    let 마지막요청 = ""
+    let 닉네임 = Entry.variableContainer.getVariableByName("닉네임").value_;
+
+    setInterval(() => {
+        const request = Entry.variableContainer.getListByName("request");
+        const find = JSON.parse(request.getArray()[request.array_.length - 1]?.data);
+        const 내용 = find[닉네임];
+
+        if (!내용) return;
+        if (내용 === 마지막요청) return;
+
+        마지막요청 = 내용;
+
+        fetch("https://entry-wiki-server.onrender.com/wiki", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({내용: 내용})
+        })
+            .then(response => response.json())
+            .then(data => {
+                let 결과 = data.결과;
+                Entry.variableContainer.getListByName("response").getArray().push({data: 결과});
+
+                let status = Entry.variableContainer.getVariableByName("status");
+                status.setValue("200");
+            });
+    }, 1000);
+})();
 </script>
