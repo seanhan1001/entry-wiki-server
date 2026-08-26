@@ -20,8 +20,50 @@
 <script>
     console.log("Entry.init:", typeof Entry.init);
 
+    Entry.creationChangedEvent = new Entry.Event(window);
+
     Entry.init(document.getElementById("entryContainer"), {
         type: "workspace",
         libDir: "/"
+    });
+
+    fetch("https://playentry.org/graphql/SELECT_PROJECT", {
+      "headers": {
+        "accept": "*/*",
+        "accept-language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
+        "content-type": "application/json",
+        "priority": "u=1, i",
+        "sec-ch-ua": "\"Not=A?Brand\";v=\"99\", \"Google Chrome\";v=\"151\", \"Chromium\";v=\"151\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"macOS\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "x-client-type": "Client"
+      },
+      "referrer": "https://playentry.org/iframe/6a8a394af6d0027a7c0576b7?s=57c271ec",
+      "body": "{\"query\":\"\\n    query SELECT_PROJECT($id: ID! $groupId: ID) {\\n        project(id: $id, groupId: $groupId) {\\n            id\\n            name\\n            speed\\n            objects\\n            variables\\n            messages\\n            functions\\n            tables\\n            scenes\\n            cloudVariable\\n            learning\\n            expansionBlocks\\n            aiUtilizeBlocks\\n            hardwareLiteBlocks\\n        }\\n    }\\n\",\"variables\":{\"id\":\"6a8a394af6d0027a7c0576b7\"}}",
+      "method": "POST",
+      "mode": "cors",
+      "credentials": "include"
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("프로젝트 응답:", data);
+
+        const project = data.data.project;
+
+        if (!project) {
+            console.error("프로젝트 데이터를 찾지 못함");
+            return;
+        }
+
+        Entry.clearProject();
+        Entry.loadProject(project);
+
+        console.log("작품 로드 완료:", project.name);
+    })
+    .catch(error => {
+        console.error("프로젝트 로드 실패:", error);
     });
 </script>
