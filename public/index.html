@@ -1,29 +1,34 @@
 <link rel="stylesheet" href="/entry-tool.css">
 <link rel="stylesheet" href="/entry.min.css">
 
-<div id="entryContainer"></div>
+<div id="entryContainer" style="display:none;"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
-<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react@17/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@17/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4/lodash.min.js"></script>
 
 <script src="/entry-tool.js"></script>
 <script src="/legacy-video.js"></script>
 <script src="/sound-editor.js"></script>
 
-<!-- ★ EntryJS 공식 필수 선행 파일 -->
 <script src="/entry-lang-ko.js"></script>
 <script src="/entry-static.js"></script>
 
 <script src="/entry.min.js"></script>
 
 <script>
-    console.log("Entry.init:", typeof Entry.init);
+async function start() {
+    Entry.creationChangedEvent = new Entry.Event(window);
 
     Entry.init(document.getElementById("entryContainer"), {
         type: "workspace",
         libDir: "/"
     });
+
+    console.log("Entry.init:", typeof Entry.init);
+
+    // 여기서 프로젝트를 가져와서 Entry.loadProject()에 넣을 거임
+}
+
+start();
 </script>
