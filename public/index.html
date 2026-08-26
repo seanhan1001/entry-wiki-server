@@ -1,14 +1,17 @@
+<link rel="stylesheet" href="/entry-tool.css">
+<link rel="stylesheet" href="/entry.min.css">
+
 <div id="entryContainer"></div>
 
+<script src="/entry-tool.js"></script>
 <script src="/entry.min.js"></script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+    console.log("EntryTool:", typeof EntryTool);
     console.log("Entry:", Entry);
-    console.log("Entry.init:", Entry.init);
+    console.log("Entry.init:", typeof Entry.init);
 
     Entry.init(document.getElementById("entryContainer"), {
         type: "workspace"
     });
-});
 </script>
