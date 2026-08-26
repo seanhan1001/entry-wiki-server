@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="/entry-tool.css">
 <link rel="stylesheet" href="/entry.min.css">
 
-<div id="entryContainer" style="display:none;"></div>
+<div id="entryContainer"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/react@17/umd/react.production.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/react-dom@17/umd/react-dom.production.min.js"></script>
@@ -17,7 +17,7 @@
 <script src="/entry.min.js"></script>
 
 <script>
-(async function () {
+(async () => {
     const projectId = "6a8a394af6d0027a7c0576b7";
 
     Entry.creationChangedEvent = new Entry.Event(window);
@@ -27,10 +27,13 @@
         libDir: "/"
     });
 
+    console.log("Entry.init 완료");
+
     const query = `
         query SELECT_PROJECT($id: ID! $groupId: ID) {
             project(id: $id, groupId: $groupId) {
                 id
+                name
                 speed
                 objects
                 variables
@@ -43,23 +46,6 @@
                 expansionBlocks
                 aiUtilizeBlocks
                 hardwareLiteBlocks
-                realTimeVariable {
-                    variableType
-                    key
-                    value
-                    array {
-                        key
-                        data
-                    }
-                    minValue
-                    maxValue
-                    visible
-                    x
-                    y
-                    width
-                    height
-                    object
-                }
             }
         }
     `;
@@ -71,7 +57,7 @@
         },
         credentials: "include",
         body: JSON.stringify({
-            query,
+            query: query,
             variables: {
                 id: projectId
             }
@@ -80,44 +66,25 @@
 
     const data = await response.json();
 
+    console.log("GraphQL 응답:", data);
+
     if (data.errors) {
-        console.error(data.errors);
+        console.error("GraphQL 오류:", data.errors);
         return;
     }
 
     const project = data.data.project;
 
+    if (!project) {
+        console.error("프로젝트 없음");
+        return;
+    }
+
+    console.log("프로젝트 데이터 받음:", project);
+
     Entry.clearProject();
     Entry.loadProject(project);
 
-    let 마지막요청 = ""
-    let 닉네임 = Entry.variableContainer.getVariableByName("닉네임").value_;
-
-    setInterval(() => {
-        const request = Entry.variableContainer.getListByName("request");
-        const find = JSON.parse(request.getArray()[request.array_.length - 1]?.data);
-        const 내용 = find[닉네임];
-
-        if (!내용) return;
-        if (내용 === 마지막요청) return;
-
-        마지막요청 = 내용;
-
-        fetch("https://entry-wiki-server.onrender.com/wiki", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({내용: 내용})
-        })
-            .then(response => response.json())
-            .then(data => {
-                let 결과 = data.결과;
-                Entry.variableContainer.getListByName("response").getArray().push({data: 결과});
-
-                let status = Entry.variableContainer.getVariableByName("status");
-                status.setValue("200");
-            });
-    }, 1000);
+    console.log("🔥 작품 로드 성공!");
 })();
 </script>
