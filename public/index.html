@@ -1,10 +1,14 @@
+<div id="entryContainer"></div>
+
 <script src="/entry.min.js"></script>
 
 <script>
-    console.log("Entry =", Entry);
-    console.log("Entry.init =", Entry.init);
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("Entry:", Entry);
+    console.log("Entry.init:", Entry.init);
 
     Entry.init(document.getElementById("entryContainer"), {
         type: "workspace"
     });
+});
 </script>
