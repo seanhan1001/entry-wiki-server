@@ -4,16 +4,13 @@
 <div id="entryContainer"></div>
 
 <script src="/entry-tool.js"></script>
-<script src="/sound-editor.js"></script>
 <script src="/legacy-video.js"></script>
+<script src="/sound-editor.js"></script>
 <script src="/entry.min.js"></script>
 
 <script>
     console.log("EntryTool:", typeof EntryTool);
-    console.log("Entry:", Entry);
+    console.log("EntryVideoLegacy:", typeof EntryVideoLegacy);
+    console.log("EntrySoundEditor:", typeof EntrySoundEditor);
     console.log("Entry.init:", typeof Entry.init);
-
-    Entry.init(document.getElementById("entryContainer"), {
-        type: "workspace"
-    });
 </script>
