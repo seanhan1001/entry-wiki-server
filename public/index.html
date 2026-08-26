@@ -10,11 +10,18 @@
 <script src="/entry-tool.js"></script>
 <script src="/legacy-video.js"></script>
 <script src="/sound-editor.js"></script>
+
+<!-- ★ EntryJS 공식 필수 선행 파일 -->
+<script src="/entry-lang-ko.js"></script>
+<script src="/entry-static.js"></script>
+
 <script src="/entry.min.js"></script>
 
 <script>
-    console.log("EntryTool:", typeof EntryTool);
-    console.log("EntryVideoLegacy:", typeof EntryVideoLegacy);
-    console.log("EntrySoundEditor:", typeof EntrySoundEditor);
     console.log("Entry.init:", typeof Entry.init);
+
+    Entry.init(document.getElementById("entryContainer"), {
+        type: "workspace",
+        libDir: "/"
+    });
 </script>
