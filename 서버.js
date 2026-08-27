@@ -12,18 +12,37 @@ app.get("/", (req, res) => {
 });
 
 app.get("/test-entry", async (req, res) => {
-    const response = await fetch(
-        "https://playentry.org/project/6a8a394af6d0027a7c0576b7/"
-    );
+    try {
+        const response = await fetch(
+            "https://playentry.org/project/6a8a394af6d0027a7c0576b7/"
+        );
 
-    console.log("status:", response.status);
-    console.log("url:", response.url);
+        const text = await response.text();
 
-    const text = await response.text();
+        console.log("status:", response.status);
+        console.log("url:", response.url);
 
-    console.log(text.slice(0, 1000));
+        console.log("project:", text.includes("6a8a394af6d0027a7c0576b7"));
+        console.log("variables:", text.includes("variables"));
+        console.log("objects:", text.includes("objects"));
+        console.log("projectData:", text.includes("projectData"));
 
-    res.send(text.slice(0, 1000));
+        res.json({
+            status: response.status,
+            url: response.url,
+            hasProjectId: text.includes("6a8a394af6d0027a7c0576b7"),
+            hasVariables: text.includes("variables"),
+            hasObjects: text.includes("objects"),
+            hasProjectData: text.includes("projectData")
+        });
+
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            error: error.message
+        });
+    }
 });
 
 app.post("/wiki", async (req, res) => {
