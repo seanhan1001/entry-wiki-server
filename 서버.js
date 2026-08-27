@@ -13,39 +13,64 @@ app.get("/", (req, res) => {
 
 app.get("/test-entry", async (req, res) => {
     try {
-        const url =
-            "https://playentry.org/_next/static/chunks/pages/project/%5Bid%5D-51fafb63b4cb7ee7.js";
+        const query = `
+            query SELECT_PROJECT($id: ID! $groupId: ID) {
+                project(id: $id, groupId: $groupId) {
+                    id
+                    name
+                    objects
+                    variables
+                    messages
+                    functions
+                    tables
+                    scenes
+                    realTimeVariable {
+                        variableType
+                        key
+                        value
+                        array {
+                            key
+                            data
+                        }
+                        minValue
+                        maxValue
+                        visible
+                        x
+                        y
+                        width
+                        height
+                        object
+                    }
+                    speed
+                    expansionBlocks
+                    aiUtilizeBlocks
+                    hardwareLiteBlocks
+                }
+            }
+        `;
 
-        const response = await fetch(url);
-        const text = await response.text();
+        const response = await fetch(
+            "https://playentry.org/graphql/SELECT_PROJECT",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    query: query,
+                    variables: {
+                        id: "6a8a394af6d0027a7c0576b7"
+                    }
+                })
+            }
+        );
+
+        const data = await response.json();
 
         console.log("status:", response.status);
-        console.log("length:", text.length);
+        console.log(JSON.stringify(data, null, 2));
 
-        const keywords = [
-            "fetch(",
-            "/api/",
-            "project",
-            "axios",
-            "query",
-            "graphql"
-        ];
-
-        for (const keyword of keywords) {
-            console.log(
-                keyword,
-                "=>",
-                text.includes(keyword)
-            );
-        }
-
-        res.json({
-            status: response.status,
-            length: text.length,
-            keywords: Object.fromEntries(
-                keywords.map(k => [k, text.includes(k)])
-            )
-        });
+        res.json(data);
 
     } catch (error) {
         console.error(error);
