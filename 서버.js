@@ -84,32 +84,23 @@ app.get("/test-entry", async (req, res) => {
 });
 
 app.post("/wiki", async (req, res) => {
-    try {
-        const 내용 = req.body.내용;
+    const 내용 = req.body.내용;
 
-        const response = await fetch(
-            "https://ko.wikipedia.org/w/api.php?action=query&prop=extracts&exintro=1&explaintext=1&format=json&origin=*&titles=" +
-            encodeURIComponent(내용)
-        );
+    const response = await fetch(
+        "https://ko.wikipedia.org/w/api.php?action=query&prop=extracts&exintro=1&explaintext=1&format=json&origin=*&titles=" +
+        encodeURIComponent(내용)
+    );
 
-        const data = await response.json();
+    const data = await response.json();
 
-        const 결과 =
-            data.query.pages[
-                Object.keys(data.query.pages)[0]
-            ].extract;
+    const 결과 =
+        data.query.pages[
+            Object.keys(data.query.pages)[0]
+        ].extract;
 
-        res.json({
-            결과: 결과
-        });
-
-    } catch (error) {
-        console.error(error);
-
-        res.status(500).json({
-            error: error.message
-        });
-    }
+    res.json({
+        결과: 결과
+    });
 });
 
 app.listen(process.env.PORT || 3000, () => {
