@@ -13,22 +13,38 @@ app.get("/", (req, res) => {
 
 app.get("/test-entry", async (req, res) => {
     try {
-        const response = await fetch(
-            "https://playentry.org/project/6a8a394af6d0027a7c0576b7/"
-        );
+        const url =
+            "https://playentry.org/_next/static/chunks/pages/project/%5Bid%5D-51fafb63b4cb7ee7.js";
 
+        const response = await fetch(url);
         const text = await response.text();
 
-        const scripts = [
-            ...text.matchAll(/<script[^>]+src=["']([^"']+)["']/g)
-        ].map(match => match[1]);
-
         console.log("status:", response.status);
-        console.log("scripts:", scripts);
+        console.log("length:", text.length);
+
+        const keywords = [
+            "fetch(",
+            "/api/",
+            "project",
+            "axios",
+            "query",
+            "graphql"
+        ];
+
+        for (const keyword of keywords) {
+            console.log(
+                keyword,
+                "=>",
+                text.includes(keyword)
+            );
+        }
 
         res.json({
             status: response.status,
-            scripts: scripts
+            length: text.length,
+            keywords: Object.fromEntries(
+                keywords.map(k => [k, text.includes(k)])
+            )
         });
 
     } catch (error) {
