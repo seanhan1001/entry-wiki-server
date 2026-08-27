@@ -3,60 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="/entry-tool.css">
     <link rel="stylesheet" href="/entry.min.css">
+
+    <script src="/lib/jquery.min.js"></script>
+    <script src="/lib/jquery-ui.min.js"></script>
+    <script src="/lib/underscore.min.js"></script>
+
+    <script src="/lib/preloadjs-0.6.0.min.js"></script>
+    <script src="/lib/easeljs-0.8.0.min.js"></script>
+    <script src="/lib/soundjs-0.6.0.min.js"></script>
+
+    <script src="/lib/lodash.min.js"></script>
+
+    <script src="/lib/velocity.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <script src="/entry-tool.js"></script>
+    <script src="/entry-lang-ko.js"></script>
+    <script src="/entry-static.js"></script>
+
+    <script src="/entry.min.js"></script>
 </head>
+
 <body>
+    <div id="entryContainer"></div>
 
-<div id="entryContainer"></div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("createjs:", typeof createjs);
+            console.log("_:", typeof _);
+            console.log("React:", typeof React);
+            console.log("ReactDOM:", typeof ReactDOM);
+            console.log("ReactDOM.createRoot:", typeof ReactDOM.createRoot);
+            console.log("Entry:", typeof Entry);
+            console.log("Entry.init:", typeof Entry.init);
+            console.log("Entry.loadProject:", typeof Entry.loadProject);
 
-<iframe
-    src="https://playentry.org/project/6a8a394af6d0027a7c0576b7"
-    width="100%"
-    height="800"
-    style="border: none;"
-></iframe>
+            Entry.creationChangedEvent = new Entry.Event(window);
 
-<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+            Entry.init(document.getElementById("entryContainer"), {
+                type: "workspace",
+                libDir: "/lib",
+                hardwareEnable: false
+            });
 
-<script src="https://code.createjs.com/createjs-2014.12.12.min.js"></script>
+            console.log("Entry.init 완료");
 
-<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+            Entry.loadProject();
 
-<script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
-
-<script src="/entry-tool.js"></script>
-<script src="/legacy-video.js"></script>
-<script src="/sound-editor.js"></script>
-
-<script src="/entry-lang-ko.js"></script>
-<script src="/entry-static.js"></script>
-<script src="/entry.min.js"></script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("createjs:", typeof createjs);
-    console.log("Entry:", typeof Entry);
-    console.log("Entry.init:", typeof Entry.init);
-    console.log("Entry.loadProject:", typeof Entry.loadProject);
-
-    Entry.init(document.getElementById("entryContainer"), {
-        type: "workspace",
-        libDir: "/lib",
-        entryDir: "/@entrylabs/entry",
-        baseUrl: location.origin
-    });
-
-    console.log("Entry.init 완료");
-
-    Entry.loadProject();
-
-    console.log("Entry.loadProject 완료");
-});
-</script>
-
+            console.log("Entry.loadProject 완료");
+        });
+    </script>
 </body>
 </html>
