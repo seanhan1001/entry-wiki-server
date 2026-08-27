@@ -56,7 +56,6 @@ app.get("/test-entry", async (req, res) => {
                 headers: {
                     "Content-Type": "application/json",
                     "Accept": "*/*",
-                    "x-client-type": "Client"
                 },
                 body: JSON.stringify({
                     query: query,
