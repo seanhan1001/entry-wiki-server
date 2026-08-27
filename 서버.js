@@ -19,16 +19,21 @@ app.get("/test-entry", async (req, res) => {
 
         const text = await response.text();
 
-        const scripts = [
-            ...text.matchAll(/<script[^>]+src=["']([^"']+)["']/g)
-        ].map(match => match[1]);
-
         console.log("status:", response.status);
-        console.log("scripts:", scripts);
+        console.log("url:", response.url);
+
+        console.log("project:", text.includes("6a8a394af6d0027a7c0576b7"));
+        console.log("variables:", text.includes("variables"));
+        console.log("objects:", text.includes("objects"));
+        console.log("projectData:", text.includes("projectData"));
 
         res.json({
             status: response.status,
-            scripts: scripts
+            url: response.url,
+            hasProjectId: text.includes("6a8a394af6d0027a7c0576b7"),
+            hasVariables: text.includes("variables"),
+            hasObjects: text.includes("objects"),
+            hasProjectData: text.includes("projectData")
         });
 
     } catch (error) {
