@@ -11,75 +11,30 @@ app.get("/", (req, res) => {
     res.send("서버 열림.");
 });
 
-app.get("/test-entry", async (req, res) => {
-    try {
-        const query = `
-            query SELECT_PROJECT($id: ID! $groupId: ID) {
-                project(id: $id, groupId: $groupId) {
-                    id
-                    name
-                    objects
-                    variables
-                    messages
-                    functions
-                    tables
-                    scenes
-                    realTimeVariable {
-                        variableType
-                        key
-                        value
-                        array {
-                            key
-                            data
-                        }
-                        minValue
-                        maxValue
-                        visible
-                        x
-                        y
-                        width
-                        height
-                        object
-                    }
-                    speed
-                    expansionBlocks
-                    aiUtilizeBlocks
-                    hardwareLiteBlocks
-                }
+const response = await fetch(
+    "https://playentry.org/graphql/SELECT_PROJECT",
+    {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "*/*",
+            "x-client-type": "Client"
+        },
+        body: JSON.stringify({
+            query: query,
+            variables: {
+                id: "6a8a394af6d0027a7c0576b7"
             }
-        `;
-
-        const response = await fetch(
-            "https://playentry.org/graphql/SELECT_PROJECT",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    query: query,
-                    variables: {
-                        id: "6a8a394af6d0027a7c0576b7"
-                    }
-                })
-            }
-        );
-
-        const data = await response.json();
-
-        console.log("status:", response.status);
-        console.log(JSON.stringify(data, null, 2));
-
-        res.json(data);
-
-    } catch (error) {
-        console.error(error);
-
-        res.status(500).json({
-            error: error.message
-        });
+        })
     }
-});
+);
+
+const text = await response.text();
+
+console.log("status:", response.status);
+console.log("response:", text);
+
+res.send(text);
 
 app.post("/wiki", async (req, res) => {
     const 내용  = req.body.내용;
