@@ -11,6 +11,21 @@ app.get("/", (req, res) => {
     res.send("서버 열림.");
 });
 
+app.get("/test-entry", async (req, res) => {
+    const response = await fetch(
+        "https://playentry.org/project/6a8a394af6d0027a7c0576b7/"
+    );
+
+    console.log("status:", response.status);
+    console.log("url:", response.url);
+
+    const text = await response.text();
+
+    console.log(text.slice(0, 1000));
+
+    res.send(text.slice(0, 1000));
+});
+
 app.post("/wiki", async (req, res) => {
     const 내용  = req.body.내용;
 
