@@ -1,2 +1,2 @@
 # entry-wiki-server
-ㅗ
+entryjs
